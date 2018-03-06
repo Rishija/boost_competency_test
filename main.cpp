@@ -1,26 +1,36 @@
 #include "segtree.h"
 
-template <class T>
+template<class T>
+/**
+ Constructor
+ 
+ @param arr Input
+ @param dc Default value
+ @param fn Generic function to be applied to build segment tree
+ */
 Segment_tree<T>::Segment_tree(vector<T> arr, T dc, function<T(T, T)> fn) : dontCare(dc), tree( 2*pow(2, ceil(log2(arr.size()))) - 1 ), objFn(fn){
     
     size_t size = tree.size(), i = size/2;
-    for(size_t j = 0; j < arr.size(); ++i, ++j)
+    
+    // Fill leaf nodes with given values
+    for(size_t j = 0; j != arr.size(); ++i, ++j)
         tree[i] = arr[j];
     
+    // Fill rest of the leaves with default value
     while(i < size){
         tree[i] = dontCare;
         ++i;
     }
     
+    // Apply given function to get values of internal and root node
     i = 0;
-    for(size_t j = size/2 - 1; i < size/2 ; --j, ++i)
+    for(size_t j = size/2 - 1; i != size/2 ; --j, ++i)
         tree[j] = objFn(tree[2*j+1], tree[2*j+2]);
 }
 
 
 template<class T>
-void Segment_tree<T>::print_tree(size_t root, int tabs)
-{
+void Segment_tree<T>::print_tree(size_t root, int tabs) {
     if(root < tree.size()) {
         tabs += 3;
         print_tree(2*root + 2, tabs);
@@ -34,36 +44,71 @@ void Segment_tree<T>::print_tree(size_t root, int tabs)
     }
 }
 
+
 template <class T>
+/**
+ Wrapper for range_query()
+ */
 T Segment_tree<T>::range_query(size_t start, size_t end)  {
     
     assert(start <= end && "Invalid query");
     return range_query(start, end, 0, tree.size()/2, 0);
 }
 
+
 template <class T>
+/**
+ Performs range query in given range
+ 
+ @param start Starting index
+ @param end Last index
+ @param arrStart Start of segment tree
+ @param arrEnd End of segment tree
+ @param pos Current position
+ @return Value of objective function in given range
+ 
+ Approach: Recursion
+ */
 T Segment_tree<T>:: range_query(size_t start, size_t end, size_t arrStart, size_t arrEnd, size_t pos) {
     
     // current range completely lies between the given range
     if((arrStart >= start && arrEnd <= end))
         return tree[pos];
     
+    // out of bounds
     if(start > arrEnd || end < arrStart)
         return dontCare;
     
     size_t mid = (arrStart + arrEnd)/2;
     
+    // search in both the directions
     return objFn(range_query(start, end, arrStart, mid , 2*pos + 1), range_query(start, end, mid + 1, arrEnd, 2*pos + 2));
 }
 
+
 template <class T>
+/**
+ Wrapper for update()
+ */
 void Segment_tree<T>::update(size_t index, T value) {
     
     assert(index >=0 && index <= tree.size()/2 && "Invalid index");
     update(0, tree.size()/2, 0, index, value);
 }
 
+
 template<class T>
+/**
+ Updates the value of given index and propagate the changes till root
+ 
+ @param start Start of segment tree
+ @param end End of segment tree
+ @param pos Current position
+ @param index Index of input to be updated
+ @param value New value
+ 
+ Approach: Recursion
+ */
 void Segment_tree<T>::update(size_t start, size_t end, size_t pos, size_t index, T value){
     
     if(start == end){
@@ -78,34 +123,69 @@ void Segment_tree<T>::update(size_t start, size_t end, size_t pos, size_t index,
 }
 
 
+template <class E1, class E2>
+treeSum<E1,E2> const
+operator+(E1 const& u, E2 const& v) {
+    return treeSum<E1, E2>(u, v);
+}
+
+
+template <class E1, class E2>
+treeDiff<E1,E2> const
+operator-(E1 const& u, E2 const& v) {
+    return treeDiff<E1, E2>(u, v);
+}
+
+
+template <typename E1, typename E2>
+treeMul<E1,E2> const
+operator*(E1 const& u, E2 const& v) {
+    return treeMul<E1, E2>(u, v);
+}
+
 int main(){
     
-    vector<int>a={5,3,8,9,1,4};
-    Segment_tree<int> myTree(a, INT_MAX, [](const int &a, const int &b) {
-        return a < b ? a : b ;
-    });
-    myTree.print_tree();
-    cout<<myTree.range_query(0, 5)<<endl;
-    cout<<myTree.range_query(1, 5)<<endl;
-    cout<<myTree.range_query(1, 4)<<endl;
-    cout<<myTree.range_query(3, 3)<<endl;
-    cout<<myTree.range_query(2, 5)<<endl;
-    cout<<myTree.range_query(1, 3)<<endl;
-    cout<<myTree.range_query(5, 5)<<endl;
-    cout<<myTree.range_query(4, 5)<<endl;
-    cout<<myTree.range_query(3, 4)<<endl;
+    vector<int>a={5,3,8,9,1,4}, b{1,1,1,1,1,1}, c{1,2};
+    Segment_tree<int>
+    myTree(a, INT_MAX, [](const int &a, const int &b) { return a < b ? a : b ; }),
+    myTree1(a, INT_MAX, [](const int &a, const int &b) {return a < b ? a : b ; }),
+    myTree2(b, INT_MAX, [](const int &a, const int &b) {return a < b ? a : b ; });
     
-    myTree.update(5, 15);
-    myTree.print_tree();
-    cout<<myTree.range_query(0, 5)<<endl;
-    cout<<myTree.range_query(1, 5)<<endl;
-    cout<<myTree.range_query(1, 4)<<endl;
-    cout<<myTree.range_query(3, 3)<<endl;
-    cout<<myTree.range_query(2, 5)<<endl;
-    cout<<myTree.range_query(1, 3)<<endl;
-    cout<<myTree.range_query(5, 5)<<endl;
-    cout<<myTree.range_query(4, 5)<<endl;
-    cout<<myTree.range_query(3, 4)<<endl;
+    for(int i=0; i<myTree.size(); ++i)
+        cout<<myTree1[i]<<" ";
+    cout<<endl;
+    
+    for(int i=0; i<myTree1.size(); ++i)
+        cout<<myTree2[i]<<" ";
+    cout<<endl;
+    
+    Segment_tree<int> neww(myTree1 + myTree2 - myTree2 + myTree2);
+    for(int i=0; i<neww.size(); ++i)
+        cout<<neww[i]<<" ";
+    
+    cout<<endl;
+    ////    myTree.print_tree();
+    //    cout<<myTree.range_query(0, 5)<<endl;
+    //    cout<<myTree.range_query(1, 5)<<endl;
+    //    cout<<myTree.range_query(1, 4)<<endl;
+    //    cout<<myTree.range_query(3, 3)<<endl;
+    //    cout<<myTree.range_query(2, 5)<<endl;
+    //    cout<<myTree.range_query(1, 3)<<endl;
+    //    cout<<myTree.range_query(5, 5)<<endl;
+    //    cout<<myTree.range_query(4, 5)<<endl;
+    //    cout<<myTree.range_query(3, 4)<<endl;
+    //
+    //    myTree.update(5, 15);
+    ////    myTree.print_tree();
+    //    cout<<myTree.range_query(0, 5)<<endl;
+    //    cout<<myTree.range_query(1, 5)<<endl;
+    //    cout<<myTree.range_query(1, 4)<<endl;
+    //    cout<<myTree.range_query(3, 3)<<endl;
+    //    cout<<myTree.range_query(2, 5)<<endl;
+    //    cout<<myTree.range_query(1, 3)<<endl;
+    //    cout<<myTree.range_query(5, 5)<<endl;
+    //    cout<<myTree.range_query(4, 5)<<endl;
+    //    cout<<myTree.range_query(3, 4)<<endl;
     
     return 0;
 }
