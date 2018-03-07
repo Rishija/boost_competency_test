@@ -15,7 +15,7 @@ template<class T>
  @param dc Default value
  @param fn Generic function to be applied to build segment tree
  */
-Segment_tree<T>::Segment_tree(vector<T> arr, T dc, function<T(T, T)> fn) : dontCare(dc), tree( 2*pow(2, ceil(log2(arr.size()))) - 1 ), objFn(fn){
+Segment_tree<T>::Segment_tree(vector<T> arr, T dc, function<T(T, T)> fn) : dontCare(dc), tree( 2*pow(2, ceil(log2(arr.size()))) - 1 ), objFn(fn) {
     
     size_t size = tree.size(), i = size/2;
     
@@ -24,7 +24,7 @@ Segment_tree<T>::Segment_tree(vector<T> arr, T dc, function<T(T, T)> fn) : dontC
         tree[i] = arr[j];
     
     // Fill rest of the leaves with default value
-    while(i < size){
+    while(i < size) {
         tree[i] = dontCare;
         ++i;
     }
@@ -38,14 +38,14 @@ Segment_tree<T>::Segment_tree(vector<T> arr, T dc, function<T(T, T)> fn) : dontC
 
 template<class T>
 void Segment_tree<T>::print_tree(size_t root, int tabs) {
-    if(root < tree.size()) {
+    if(root < tree.size())  {
         tabs += 3;
         print_tree(2*root + 2, tabs);
         
-        cout<<endl;
+        cout << endl;
         for (int i = 3; i < tabs; i++)
-            cout<<"\t";
-        cout<<tree[root];
+            cout << "\t";
+        cout << tree[root];
         
         print_tree(2*root + 1, tabs);
     }
@@ -56,7 +56,7 @@ template <class T>
 /**
  Wrapper for range_query()
  */
-T Segment_tree<T>::range_query(size_t start, size_t end)  {
+T Segment_tree<T>::range_query(size_t start, size_t end) {
     
     assert(start <= end && "Invalid query");
     return range_query(start, end, 0, tree.size()/2, 0);
@@ -116,9 +116,9 @@ template<class T>
  
  Approach: Recursion
  */
-void Segment_tree<T>::update(size_t start, size_t end, size_t pos, size_t index, T value){
+void Segment_tree<T>::update(size_t start, size_t end, size_t pos, size_t index, T value) {
     
-    if(start == end){
+    if(start == end) {
         tree[tree.size()/2 + start] = value;
         return;
     }
@@ -150,6 +150,7 @@ operator*(E1 const& u, E2 const& v) {
     return treeMul<E1, E2>(u, v);
 }
 
+
 BOOST_AUTO_TEST_SUITE (test1)
 
 BOOST_AUTO_TEST_CASE(sum_check) {
@@ -157,55 +158,55 @@ BOOST_AUTO_TEST_CASE(sum_check) {
     fstream fp;
     fp.open("testcase1.txt", ios::in);
     int test;
-    fp>>test;
-    for(int i = 0; i<test; ++i){
+    fp >> test;
+    for(int i = 0; i < test; ++i) {
         int n, q;
-        fp>>n>>q;
+        fp >> n >> q;
         vector<int>v(n);
         for(int i=0; i<n; ++i)
-            fp>>v[i];
+            fp >> v[i];
         
-        Segment_tree<int> myTree(v, 0, [](const int &a, const int &b){
+        Segment_tree<int> myTree(v, 0, [] (const int &a, const int &b) {
             return a+b;
         });
         
-        for(int i = 0; i<q; ++i){
-            int query;  fp>>query;
-            if(query == 1){
+        for(int i = 0; i < q; ++i) {
+            int query;  fp >> query;
+            if(query == 1) {
                 int index, val;
-                fp>>index>>val;
+                fp >> index >> val;
                 updateSum(v,index,val);
                 myTree.update(index, val);
             }
-            else{
+            else {
                 int naiveAns, treeAns, l, r;
-                fp>>l>>r;
+                fp >> l >> r;
                 naiveAns = sum(v,l,r);
                 treeAns = myTree.range_query(l,r);
-                 BOOST_CHECK_EQUAL(naiveAns, treeAns);
+                BOOST_CHECK_EQUAL(naiveAns, treeAns);
             }
         }
     }
     fp.close();
 }
 
-BOOST_AUTO_TEST_CASE(occurence_check){
+BOOST_AUTO_TEST_CASE(occurence_check) {
     fstream fp;
     fp.open("testcase2.txt", ios::in);
     int test;
-    fp>>test;
-    for(int i = 0; i<test; ++i){
-//        cout<<"hola";
+    fp >> test;
+    for(int i = 0; i<test; ++i) {
+        //        cout << "hola";
         int n, q;
-        fp>>n>>q;
+        fp >> n >> q;
         char temp[1000000];
         vector<string>v(n);
-        for(int i=0; i<n; ++i){
-            fp>>temp;
+        for(int i = 0; i < n; ++i) {
+            fp >> temp;
             v[i] = temp;
         }
-
-        Segment_tree<string> myTree(v, "", [](const string &a, const string &b){
+        
+        Segment_tree<string> myTree(v, "", [](const string &a, const string &b) {
             int cnt1 = count(a.begin(), a.end(), 's'),
             cnt2 =  count(b.begin(), b.end(), 's');
             if(cnt2 > cnt1)
@@ -214,22 +215,22 @@ BOOST_AUTO_TEST_CASE(occurence_check){
                 return b;
             return a;
         });
-
-        for(int j = 0; j<q; ++j){
+        
+        for(int j = 0; j < q; ++j) {
             fp.ignore();
-            int query;  fp>>query;
-//            cout<<"query #"<<j<<" query val: "<<query<<endl;
-            if(query == 1){
-                int index;  fp>>index;
+            int query;  fp >> query;
+            //            cout << "query #" << j << " query val: " << query << endl;
+            if(query == 1) {
+                int index;  fp >> index;
                 string val;
-                fp>>temp;
+                fp >> temp;
                 val = temp;
                 updateString(v,index,val);
                 myTree.update(index, val);
             }
-            else{
+            else {
                 int l, r;
-                fp>>l>>r;
+                fp >> l >> r;
                 string naiveAns, treeAns;
                 naiveAns = maxOccurence(v,l,r);
                 treeAns = myTree.range_query(l,r);
@@ -240,36 +241,36 @@ BOOST_AUTO_TEST_CASE(occurence_check){
     fp.close();
 }
 
-BOOST_AUTO_TEST_CASE(min_check){
+BOOST_AUTO_TEST_CASE(min_check) {
     
     fstream fp;
     fp.open("testcase3.txt", ios::in);
     int test;
-    fp>>test;
-    for(int i = 0; i<test; ++i){
+    fp >> test;
+    for(int i = 0; i < test; ++i) {
         int n, q;
-        fp>>n>>q;
+        fp >> n >> q;
         vector<double>v(n);
-        for(int i=0; i<n; ++i)
-            fp>>v[i];
+        for(int i=0; i < n; ++i)
+            fp >> v[i];
         
-        Segment_tree<double> myTree(v, INT_MAX, [](const double &a, const double &b){
+        Segment_tree<double> myTree(v, INT_MAX, [](const double &a, const double &b) {
             return a < b ? a : b;
         });
         
-        for(int i = 0; i<q; ++i){
-            int query;  fp>>query;
-            if(query == 1){
+        for(int i = 0; i < q; ++i) {
+            int query;  fp >> query;
+            if(query == 1) {
                 int index;
                 double val;
-                fp>>index>>val;
+                fp >> index >> val;
                 updateMin(v,index,val);
                 myTree.update(index, val);
             }
-            else{
+            else {
                 int l, r;
                 double naiveAns, treeAns;
-                fp>>l>>r;
+                fp >> l >> r;
                 naiveAns = min(v,l,r);
                 treeAns = myTree.range_query(l,r);
                 BOOST_CHECK_EQUAL(naiveAns, treeAns);
@@ -278,6 +279,5 @@ BOOST_AUTO_TEST_CASE(min_check){
     }
     fp.close();
 }
-
 
 BOOST_AUTO_TEST_SUITE_END()
