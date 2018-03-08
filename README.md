@@ -2,6 +2,10 @@
 #### 5\. Enhancing Boost.Intrusive Library \[gsoc18\]
 
 ``` bash
+# Run sample queries
+$ g++ main.cpp -o tree -std=c++14
+$ ./tree
+
 # Generate test cases
 $ g++ random.cpp -o random
 $ ./random
