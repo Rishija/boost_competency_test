@@ -99,4 +99,6 @@ public:
     size_t size()               const { return expr2.size(); }
 };
 
+#include "segtree.cpp"
+
 #endif /* segtree_H */
