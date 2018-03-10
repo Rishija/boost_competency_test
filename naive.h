@@ -6,6 +6,7 @@
 #include <vector>
 #include <cstring>
 #include <climits>
+#include <utility>
 using namespace std;
 
 int sum(vector<int>v, int l, int r){
@@ -50,6 +51,24 @@ string maxOccurence(vector<string>v, int l, int r){
 }
 
 void updateString(vector<string>&v, size_t index, string value){
+    v[index] = value;
+}
+
+// Maximum coordinate distance
+pair<int,int> originDist(const vector<pair<int,int> > &vec, int l, int r){
+    pair<int,int> ans;
+    int max = -1;
+    for(int i = l; i<= r; ++i){
+        int thisDist = sqrt( pow(vec[i].first,2) + pow(vec[i].second,2) );
+        if(thisDist > max){
+            max = thisDist;
+            ans = vec[i];
+        }
+    }
+    return ans;
+}
+
+void updatePair(vector<pair<int,int> >&v, size_t index, const pair<int,int> &value){
     v[index] = value;
 }
 

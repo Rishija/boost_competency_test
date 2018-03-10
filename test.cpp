@@ -5,8 +5,22 @@
 #include <cstdlib>
 #include <cstring>
 #include "segtree.h"
+#include "userclass.h"
 #include "naive.h"
 
+// print pair value in case of value mismatch
+namespace boost {
+    namespace test_tools {
+        namespace tt_detail {
+            template<typename T,typename U>
+            struct print_log_value<pair<T, U> > {
+                void operator()(ostream& os, pair<T, U> const &pair) {
+                    os << "<" << pair.first << "," << pair.second << ">";
+                }
+            };
+        }
+    }
+}
 
 BOOST_AUTO_TEST_SUITE (test1)
 
@@ -27,7 +41,7 @@ BOOST_AUTO_TEST_CASE(sum_check) {
             return a+b;
         });
         
-        for(int i = 0; i < q; ++i) {
+        for(int j = 0; j < q; ++j) {
             int query;  fp >> query;
             if(query == 1) {
                 int index, val;
@@ -115,7 +129,7 @@ BOOST_AUTO_TEST_CASE(min_check) {
             return a < b ? a : b;
         });
         
-        for(int i = 0; i < q; ++i) {
+        for(int j = 0; j < q; ++j) {
             int query;  fp >> query;
             if(query == 1) {
                 int index;
@@ -131,6 +145,96 @@ BOOST_AUTO_TEST_CASE(min_check) {
                 naiveAns = min(v,l,r);
                 treeAns = myTree.range_query(l,r);
                 BOOST_CHECK_EQUAL(naiveAns, treeAns);
+            }
+        }
+    }
+    fp.close();
+}
+
+BOOST_AUTO_TEST_CASE(max_dist) {
+    
+    fstream fp;
+    fp.open("testcase4.txt", ios::in);
+    int test;
+    fp >> test;
+    for(int i = 0; i < test; ++i) {
+        int n, q;
+        fp >> n >> q;
+        vector<pair<int,int> >v(n);
+        for(int i=0; i < n; ++i){
+            int c1, c2;
+            fp >> c1 >> c2;
+            v[i] = make_pair(c1,c2);
+        }
+        
+        Segment_tree<pair<int,int> > myTree(v, make_pair(0,0), [] (const pair<int,int> &a, const pair<int,int> &b) -> pair<int,int> {
+            int dist1 = sqrt( pow(a.first,2) + pow(a.second,2) ),
+            dist2 = sqrt( pow(b.first,2) + pow(b.second,2) );
+            return dist2 > dist1 ? b : a;
+        });
+        
+        for(int j = 0; j < q; ++j) {
+            int query;  fp >> query;
+            if(query == 1) {
+                int index, fir, sec;
+                pair<int,int> val;
+                fp >> index >> fir >> sec;
+                val = make_pair(fir,sec);
+                updatePair(v,index,val);
+                myTree.update(index, val);
+            }
+            else {
+                int l, r, nAns, tAns;
+                pair<int,int> naiveAns, treeAns;
+                fp >> l >> r;
+                naiveAns = originDist(v,l,r);
+                treeAns = myTree.range_query(l,r);
+                BOOST_CHECK_EQUAL(naiveAns, treeAns);
+            }
+        }
+    }
+    fp.close();
+}
+
+BOOST_AUTO_TEST_CASE(total_expenditure) {
+    
+    fstream fp;
+    fp.open("testcase5.txt", ios::in);
+    int test;
+    fp >> test;
+    for(int i = 0; i < test; ++i) {
+        int n, q;
+        fp >> n >> q;
+        vector<Expenditure>v(n);
+        for(int i=0; i < n; ++i){
+            int q1, r1, q2, r2;
+            fp >> q1 >> r1 >> q2 >> r2;
+            Expenditure temp(q1,r1,q2,r2);
+            v[i] = temp;
+        }
+        
+        Expenditure nulll(0,0,0,0);
+        Segment_tree<Expenditure> myTree(v, nulll, [](const Expenditure &a, const Expenditure &b) {
+            Expenditure c(a.getQuant1() + b.getQuant1(), a.getRent1() + b.getRent1(), a.getQuant2() + b.getQuant2(), a.getRent2() + b.getRent2());
+            return c;
+        });
+        
+        for(int j = 0; j < q; ++j) {
+            int query;  fp >> query;
+            if(query == 1) {
+                int index, q1, r1, q2, r2;
+                fp >> index >> q1 >> r1 >> q2 >> r2;
+                Expenditure val(q1,r1,q2,r2);
+                updateExpenditure(v,index,val);
+                myTree.update(index, val);
+            }
+            else {
+                int l, r;
+                Expenditure naiveAns, treeAns;
+                fp >> l >> r;
+                naiveAns = totalExpenditure(v,l,r);
+                treeAns = myTree.range_query(l,r);
+                BOOST_CHECK(naiveAns == treeAns);
             }
         }
     }

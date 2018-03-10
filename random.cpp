@@ -103,6 +103,64 @@ int main() {
     }
     fp.close();
     
+    
+    // coordinate with maximum distance from origin
+    fp.open("testcase4.txt", ios::out);
+    cases = 100;
+    fp << cases << endl;
+    while(cases--) {
+        int n = rand() % 2000 + 1, queries = rand() % 5000 + 1;
+        fp << n << " " << queries << endl;
+        for(int i = 0; i<n; ++i) {
+            fp << (rand() % 10000) - 5000 << " " << (rand() % 10000) - 5000 << " ";
+        }
+        fp << endl;
+        while(queries--) {
+            int q = rand() % 2 + 1;
+            fp << q << " ";
+            if(q==1) {
+                int index = rand() % n;
+                fp << index << " " << (rand() % 10000) - 5000 << " " << (rand() % 10000) - 5000 << endl;
+            }
+            else {
+                int l = rand() % n, r = rand() % n;
+                while(r < l)
+                    r = rand() % n;
+                fp << l << " " << r << endl;
+            }
+        }
+    }
+    fp.close();
+    
+    
+    // total expenditure
+    fp.open("testcase5.txt", ios::out);
+    cases = 100;
+    fp << cases << endl;
+    while(cases--) {
+        int n = rand() % 1000 + 1, queries = rand() % 5000 + 1;
+        fp << n << " " << queries << endl;
+        for(int i = 0; i<n; ++i) {
+            fp << rand() % 10 << " " << rand() % 200 << " " << rand() % 10 << " " << rand() % 200 << " ";
+        }
+        fp << endl;
+        while(queries--) {
+            int q = rand() % 2 + 1;
+            fp << q << " ";
+            if(q==1) {
+                int index = rand() % n;
+                fp << index << " " << rand() % 10 << " " << rand() % 200 << " " << rand() % 10 << " " << rand() % 200 << endl;
+            }
+            else {
+                int l = rand() % n, r = rand() % n;
+                while(r < l)
+                    r = rand() % n;
+                fp << l << " " << r << endl;
+            }
+        }
+    }
+    fp.close();
+        
     return 0;
 }
 
