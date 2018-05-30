@@ -1,17 +1,30 @@
-## Boost Competency Test
-#### 5\. Enhancing Boost.Intrusive Library \[gsoc18\]
+## Generic Segment Tree
 
+A generic segment tree build with template meta programming.
+
+Initialization can be done either by passing
+*  vector of nodes with similar structure
+* default value for empty nodes
+* objective function
+
+or
+Passing an expression of existing segment trees
+
+Tree supports
+* point update
+* range query.
 ``` bash
-# Run sample queries
-$ g++ main.cpp -o tree -std=c++14
-$ ./tree
-
 # Generate test cases
-$ g++ random.cpp -o random
-$ ./random
+$ make generate
 
-# Run tests
-$ g++ test.cpp -o test -lboost_unit_test_framework-mt -std=c++14
+# Compile segment tree
+$ make tree
+
+# Run test cases
+$ make test
 $ ./test --log_level=test_suite
-```
 
+
+# Compile, generate and test
+$ make
+```
