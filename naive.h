@@ -7,8 +7,10 @@
 #include <cstring>
 #include <climits>
 #include <utility>
+#include "userclass.h"
 using namespace std;
 
+// Testcase 1
 int sum(vector<int>v, int l, int r){
     int sum = 0;
     for(int i = l; i <= r; ++i)
@@ -20,6 +22,7 @@ void updateSum(vector<int>&v, size_t index, int value){
     v[index] = value;
 }
 
+// Testcase 2
 double min(vector<double>v, int l, int r){
     double min = INT_MAX;
     for(int i = l; i <= r; ++i)
@@ -32,7 +35,9 @@ void updateMin(vector<double>&v, size_t index, double value){
     v[index] = value;
 }
 
+// Testcase 3
 string maxOccurence(vector<string>v, int l, int r){
+    
     string ans = "";
     int c = -1;
     for(int i = l; i <= r; ++i){
@@ -45,7 +50,6 @@ string maxOccurence(vector<string>v, int l, int r){
             ans = v[i];
             c = cnt;
         }
-            
     }
     return ans;
 }
@@ -54,8 +58,9 @@ void updateString(vector<string>&v, size_t index, string value){
     v[index] = value;
 }
 
-// Maximum coordinate distance
+// Testcase 4
 pair<int,int> originDist(const vector<pair<int,int> > &vec, int l, int r){
+    
     pair<int,int> ans;
     int max = -1;
     for(int i = l; i<= r; ++i){
