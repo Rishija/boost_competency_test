@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 #include "segtree.h"
-#include "naive.h"
+#include "testcases/naive.h"
 
 // print pair value in case of value mismatch
 namespace boost {
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_SUITE (test1)
 BOOST_AUTO_TEST_CASE(sum_check) {
     
     fstream fp;
-    fp.open("testcase1.txt", ios::in);
+    fp.open("./generate_cases/testcase1.txt", ios::in);
     int test;
     fp >> test;
     for(int i = 0; i < test; ++i) {
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(sum_check) {
 
 BOOST_AUTO_TEST_CASE(occurence_check) {
     fstream fp;
-    fp.open("testcase2.txt", ios::in);
+    fp.open("./generate_cases/testcase2.txt", ios::in);
     int test;
     fp >> test;
     for(int i = 0; i<test; ++i) {
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(occurence_check) {
 BOOST_AUTO_TEST_CASE(min_check) {
     
     fstream fp;
-    fp.open("testcase3.txt", ios::in);
+    fp.open("./generate_cases/testcase3.txt", ios::in);
     int test;
     fp >> test;
     for(int i = 0; i < test; ++i) {
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(min_check) {
 BOOST_AUTO_TEST_CASE(max_dist) {
     
     fstream fp;
-    fp.open("testcase4.txt", ios::in);
+    fp.open("./generate_cases/testcase4.txt", ios::in);
     int test;
     fp >> test;
     for(int i = 0; i < test; ++i) {
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(max_dist) {
 BOOST_AUTO_TEST_CASE(total_expenditure) {
     
     fstream fp;
-    fp.open("testcase5.txt", ios::in);
+    fp.open("./generate_cases/testcase5.txt", ios::in);
     int test;
     fp >> test;
     for(int i = 0; i < test; ++i) {
