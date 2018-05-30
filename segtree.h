@@ -65,7 +65,7 @@ public:
         assert(u.size() == v.size());
     }
     
-    auto operator[](size_t i) const { return expr1[i] + expr2[i]; }
+    auto operator[](size_t i)   const { return expr1[i] + expr2[i]; }
     size_t size()               const { return expr2.size(); }
 };
 
@@ -80,7 +80,7 @@ public:
         assert(u.size() == v.size());
     }
     
-    auto operator[](size_t i) const { return expr1[i] - expr2[i]; }
+    auto operator[](size_t i)   const { return expr1[i] - expr2[i]; }
     size_t size()               const { return expr2.size(); }
 };
 
@@ -95,7 +95,7 @@ public:
         assert(u.size() == v.size());
     }
     
-    auto operator[](size_t i) const { return expr1[i] * expr2[i]; }
+    auto operator[](size_t i)   const { return expr1[i] * expr2[i]; }
     size_t size()               const { return expr2.size(); }
 };
 

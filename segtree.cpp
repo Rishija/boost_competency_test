@@ -4,9 +4,9 @@ template<class T>
 /**
  Constructor
  
- @param arr Input
- @param dc Default value
- @param fn Generic function to be applied to build segment tree
+ @param arr : Input
+ @param dc  : Default value
+ @param fn  : Generic function to be applied to build segment tree
  */
 Segment_tree<T>::Segment_tree(vector<T> arr, T dc, function<T(T, T)> fn) : dontCare(dc), tree( 2*pow(2, ceil(log2(arr.size()))) - 1 ), objFn(fn) {
     
@@ -60,11 +60,11 @@ template <class T>
 /**
  Performs range query in given range
  
- @param start Starting index
- @param end Last index
- @param arrStart Start of segment tree
- @param arrEnd End of segment tree
- @param pos Current position
+ @param start    : Starting index
+ @param end      : Last index
+ @param arrStart : Start of segment tree
+ @param arrEnd   : End of segment tree
+ @param pos      : Current position
  @return Value of objective function in given range
  
  Approach: Recursion
@@ -101,11 +101,11 @@ template<class T>
 /**
  Updates the value of given index and propagate the changes till root
  
- @param start Start of segment tree
- @param end End of segment tree
- @param pos Current position
- @param index Index of input to be updated
- @param value New value
+ @param start : Start of segment tree
+ @param end   : End of segment tree
+ @param pos   : Current position
+ @param index : Index of input to be updated
+ @param value : New value
  
  Approach: Recursion
  */
@@ -124,21 +124,21 @@ void Segment_tree<T>::update(size_t start, size_t end, size_t pos, size_t index,
 
 
 template <class E1, class E2>
-treeSum<E1,E2> const
+treeSum<E1, E2> const
 operator+(E1 const& u, E2 const& v) {
     return treeSum<E1, E2>(u, v);
 }
 
 
 template <class E1, class E2>
-treeDiff<E1,E2> const
+treeDiff<E1, E2> const
 operator-(E1 const& u, E2 const& v) {
     return treeDiff<E1, E2>(u, v);
 }
 
 
 template <typename E1, typename E2>
-treeMul<E1,E2> const
+treeMul<E1, E2> const
 operator*(E1 const& u, E2 const& v) {
     return treeMul<E1, E2>(u, v);
 }

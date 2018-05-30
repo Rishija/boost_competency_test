@@ -16,7 +16,7 @@ int main() {
         cout << myTree2[i] << " ";
     cout << endl;
     
-    // new segment tree initialised with expression
+    // new segment tree initialised with expression (Expanded during compile time)
     Segment_tree<int> neww(myTree1 + myTree2 - myTree2 + myTree2);
     for(int i=0; i<neww.size(); ++i)
         cout << neww[i] << " ";
