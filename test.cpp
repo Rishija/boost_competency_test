@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 #include "segtree.h"
-#include "testcases/naive.h"
+#include "naive/naive.h"
 
 // print pair value in case of value mismatch
 namespace boost {
