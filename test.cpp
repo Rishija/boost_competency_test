@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <cstring>
+#include <chrono>
 #include "segtree.h"
 #include "naive/naive.h"
 
@@ -25,6 +26,8 @@ BOOST_AUTO_TEST_SUITE (test1)
 
 BOOST_AUTO_TEST_CASE(sum_check) {
     
+    long long int naiveTime = 0, treeTime = 0;
+    chrono::steady_clock::time_point t1, t2;
     fstream fp;
     fp.open("./generate_cases/testcase1.txt", ios::in);
     int test;
@@ -45,22 +48,41 @@ BOOST_AUTO_TEST_CASE(sum_check) {
             if(query == 1) {
                 int index, val;
                 fp >> index >> val;
+                
+                t1 = chrono::steady_clock::now();
                 updateSum(v,index,val);
+                t2 = chrono::steady_clock::now();
+                naiveTime += chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
+                
                 myTree.update(index, val);
+                t1 = chrono::steady_clock::now();
+                treeTime += chrono::duration_cast<chrono::microseconds>(t1 - t2).count();
             }
             else {
                 int naiveAns, treeAns, l, r;
                 fp >> l >> r;
+                
+                t1 = chrono::steady_clock::now();
                 naiveAns = sum(v,l,r);
+                t2 = chrono::steady_clock::now();
+                naiveTime += chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
+                
                 treeAns = myTree.range_query(l,r);
+                t1 = chrono::steady_clock::now();
+                treeTime += chrono::duration_cast<chrono::microseconds>(t1 - t2).count();
+                
                 BOOST_CHECK_EQUAL(naiveAns, treeAns);
             }
         }
     }
+    cout << "Naive Time: " << naiveTime << endl << "Tree Time: " << treeTime << endl;
     fp.close();
 }
 
 BOOST_AUTO_TEST_CASE(occurence_check) {
+    
+    long long int naiveTime = 0, treeTime = 0;
+    chrono::steady_clock::time_point t1, t2;
     fstream fp;
     fp.open("./generate_cases/testcase2.txt", ios::in);
     int test;
@@ -95,24 +117,40 @@ BOOST_AUTO_TEST_CASE(occurence_check) {
                 string val;
                 fp >> temp;
                 val = temp;
+                
+                t1 = chrono::steady_clock::now();
                 updateString(v,index,val);
+                t2 = chrono::steady_clock::now();
+                naiveTime += chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
+                
                 myTree.update(index, val);
             }
             else {
                 int l, r;
                 fp >> l >> r;
                 string naiveAns, treeAns;
+                
+                t1 = chrono::steady_clock::now();
                 naiveAns = maxOccurence(v,l,r);
+                t2 = chrono::steady_clock::now();
+                naiveTime += chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
+                
                 treeAns = myTree.range_query(l,r);
+                t1 = chrono::steady_clock::now();
+                treeTime += chrono::duration_cast<chrono::microseconds>(t1 - t2).count();
+                
                 BOOST_CHECK_EQUAL(naiveAns, treeAns);
             }
         }
     }
+    cout << "Naive Time: " << naiveTime << endl << "Tree Time: " << treeTime << endl;
     fp.close();
 }
 
 BOOST_AUTO_TEST_CASE(min_check) {
     
+    long long int naiveTime = 0, treeTime = 0;
+    chrono::steady_clock::time_point t1, t2;
     fstream fp;
     fp.open("./generate_cases/testcase3.txt", ios::in);
     int test;
@@ -134,24 +172,40 @@ BOOST_AUTO_TEST_CASE(min_check) {
                 int index;
                 double val;
                 fp >> index >> val;
+                
+                t1 = chrono::steady_clock::now();
                 updateMin(v,index,val);
+                t2 = chrono::steady_clock::now();
+                naiveTime += chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
+                
                 myTree.update(index, val);
             }
             else {
                 int l, r;
                 double naiveAns, treeAns;
                 fp >> l >> r;
+                
+                t1 = chrono::steady_clock::now();
                 naiveAns = min(v,l,r);
+                t2 = chrono::steady_clock::now();
+                naiveTime += chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
+                
                 treeAns = myTree.range_query(l,r);
+                t1 = chrono::steady_clock::now();
+                treeTime += chrono::duration_cast<chrono::microseconds>(t1 - t2).count();
+                
                 BOOST_CHECK_EQUAL(naiveAns, treeAns);
             }
         }
     }
+    cout << "Naive Time: " << naiveTime << endl << "Tree Time: " << treeTime << endl;
     fp.close();
 }
 
 BOOST_AUTO_TEST_CASE(max_dist) {
     
+    long long int naiveTime = 0, treeTime = 0;
+    chrono::steady_clock::time_point t1, t2;
     fstream fp;
     fp.open("./generate_cases/testcase4.txt", ios::in);
     int test;
@@ -179,6 +233,8 @@ BOOST_AUTO_TEST_CASE(max_dist) {
                 pair<int,int> val;
                 fp >> index >> fir >> sec;
                 val = make_pair(fir,sec);
+                
+                t1 = chrono::steady_clock::now();
                 updatePair(v,index,val);
                 myTree.update(index, val);
             }
@@ -186,17 +242,28 @@ BOOST_AUTO_TEST_CASE(max_dist) {
                 int l, r, nAns, tAns;
                 pair<int,int> naiveAns, treeAns;
                 fp >> l >> r;
+                
+                t1 = chrono::steady_clock::now();
                 naiveAns = originDist(v,l,r);
+                t2 = chrono::steady_clock::now();
+                naiveTime += chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
+                
                 treeAns = myTree.range_query(l,r);
+                t1 = chrono::steady_clock::now();
+                treeTime += chrono::duration_cast<chrono::microseconds>(t1 - t2).count();
+                
                 BOOST_CHECK_EQUAL(naiveAns, treeAns);
             }
         }
     }
+    cout << "Naive Time: " << naiveTime << endl << "Tree Time: " << treeTime << endl;
     fp.close();
 }
 
 BOOST_AUTO_TEST_CASE(total_expenditure) {
     
+    long long int naiveTime = 0, treeTime = 0;
+    chrono::steady_clock::time_point t1, t2;
     fstream fp;
     fp.open("./generate_cases/testcase5.txt", ios::in);
     int test;
@@ -224,19 +291,33 @@ BOOST_AUTO_TEST_CASE(total_expenditure) {
                 int index, q1, r1, q2, r2;
                 fp >> index >> q1 >> r1 >> q2 >> r2;
                 Expenditure val(q1,r1,q2,r2);
+                
+                t1 = chrono::steady_clock::now();
                 updateExpenditure(v,index,val);
+                t2 = chrono::steady_clock::now();
+                naiveTime += chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
+                
                 myTree.update(index, val);
             }
             else {
                 int l, r;
                 Expenditure naiveAns, treeAns;
                 fp >> l >> r;
+                
+                t1 = chrono::steady_clock::now();
                 naiveAns = totalExpenditure(v,l,r);
+                t2 = chrono::steady_clock::now();
+                naiveTime += chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
+                
                 treeAns = myTree.range_query(l,r);
+                t1 = chrono::steady_clock::now();
+                treeTime += chrono::duration_cast<chrono::microseconds>(t1 - t2).count();
+                
                 BOOST_CHECK(naiveAns == treeAns);
             }
         }
     }
+    cout << "Naive Time: " << naiveTime << endl << "Tree Time: " << treeTime << endl;
     fp.close();
 }
 
